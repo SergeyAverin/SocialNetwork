@@ -6,14 +6,11 @@ class DebugMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print(1)
         response = self.get_response(request)
-        print(2)
         
         return response
 
     def process_exception(self, request, exception):
-        print(exception)
-        print(3)
+        print(f"ERROR: {exception}")
 
         return HttpResponse(f"ERROR: {exception}")
