@@ -1,5 +1,6 @@
-from .models import AbstUser, Publication
 from rest_framework import serializers
+
+from .models import AbstUser, Publication, Comment
 
 
 class AbstUserSerializer(serializers.ModelSerializer):
@@ -11,4 +12,10 @@ class AbstUserSerializer(serializers.ModelSerializer):
 class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
+        fields = '__all__' 
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
         fields = '__all__' 

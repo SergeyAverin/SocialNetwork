@@ -56,4 +56,35 @@ class Publication(models.Model):
     class Meta:
         verbose_name = 'Публикация'
         verbose_name_plural = 'Публикации'
-    
+
+class Comment(models.Model):
+    text = models.CharField(
+        'текст',
+        max_length = 300
+    )
+
+    upvoted = models.IntegerField(
+        'лайки',
+        default= 0
+    )
+
+    downvoted = models.IntegerField(
+        'дизлайки',
+        default = 0
+    )
+
+    autor = models.ForeignKey(
+        AbstUser,
+        on_delete = models.CASCADE,
+        verbose_name = 'автор'
+    )
+
+    publication = models.ForeignKey(
+        Publication,
+        on_delete= models.CASCADE,
+        verbose_name= 'Публикация'
+    )
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
