@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 
 from .models import AbstUser, Publication
 from .serializers import AbstUserSerializer, PublicationSerializer
+from .services import add_voted
 
 
 class UserByUserNameView(APIView):
@@ -49,40 +50,9 @@ class PublicationByTitelView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(('GET',))        
-def add_upvoted(request, titel):
+def add_publication_voted_view(request, titel, voice):
     if request.method == 'GET':
-        publication = Publication.objects.get(titel = titel)
-        publication.upvoted += 1
-        publication.save()
+        publication = add_voted(Publication, {'titel': titel}, voice)
         serializer = PublicationSerializer(publication)    
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
-
-@api_view(('GET',))        
-def add_downvoted(request, titel):
-    if request.method == 'GET':
-        publication = Publication.objects.get(titel = titel)
-        publication.downvoted += 1
-        publication.save()
-        serializer = PublicationSerializer(publication)    
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
-
-#class PublicationByAutorView(APIView):
-#    def get(self, request, user, format=None):
-#        publication = Publication.objects.get(autor = request.user)
-#        serializer = PublicationSerializer(publication)
-#        return Response(serializer.data)
-#
-#    def put(self, request, titel, user, format=None):
-#        publication = Publication.objects.get(autor = user)
-#        serializer = PublicationSerializer(publication)
-#        if serializer.is_valid():
-#            serializer.save()
-#            return Response(serializer.data)
-#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#    def delete(self, request, titel, user, format=None):
-#        publication = Publication.objects.get(autor = user)
-#        publication.delete()
-#        return Response(status=status.HTTP_204_NO_CONTENT)
