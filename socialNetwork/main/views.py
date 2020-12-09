@@ -49,6 +49,13 @@ class PublicationByTitelView(APIView):
         publication.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class PublicationByAutorView(APIView):
+    def get(self, request, username, format=None):
+        autor = AbstUser.objects.get(username= username)
+        publication = Publication.objects.filter(autor = autor)
+        serializer = PublicationSerializer(publication, many=True)
+        return Response(serializer.data)
+
 @api_view(('GET',))        
 def add_publication_voted_view(request, titel, voice):
     if request.method == 'GET':
